@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.backoven.catdogshelter.domain.volunteer.query.mapper.VolunteerPostDetailQueryMapper">
+
+    <!-- 상세 본문 + 메타 (좋아요 수/작성자) -->
+    <select id="findDetailById" parameterType="int"
+            resultType="com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerPostDetailDTO">
+        SELECT
+            p.id,
+            p.title,
+            p.content,
+            p.created_at  AS createdAt,
+            p.updated_at  AS updatedAt,
+            p.view        AS views,
+            p.is_blinded  AS isBlinded,
+            p.is_deleted  AS isDeleted,
+            COALESCE(lc.likes, 0) AS likeCount,
+            COALESCE(u.user_name, h.company_name, h.ceo_name) AS author
+        FROM volunteerPost p
+                 LEFT JOIN (
+            SELECT post_id, COUNT(*) AS likes
+            FROM volunteerPostLiked
+            GROUP BY post_id
+        ) lc ON lc.post_id = p.id
+                 LEFT JOIN volunteerAssociationApplicationDetails vaad ON vaad.id = p.volappdetail_id
+                 LEFT JOIN user u           ON u.user_id   = vaad.user_id
+                 LEFT JOIN volunteerAssociation va ON va.id = vaad.volunteer_id
+                 LEFT JOIN shelter_head h   ON h.head_id   = va.head_id
+        WHERE p.is_deleted = FALSE
+          AND p.id = #{id}
+    </select>
+
+    <!-- 파일 목록 -->
+    <select id="findFilesByPostId" parameterType="int"
+            resultType="com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerPostFileDTO">
+        SELECT
+            f.id,
+            f.file_rename AS fileRename,
+            f.file_path   AS filePath,
+            f.uploaded_at AS uploadedAt
+        FROM volunteerPostFiles f
+        WHERE f.post_id = #{id}
+        ORDER BY f.id ASC
+    </select>
+
+    <!-- 조회수 +1 -->
+    <update id="increaseView" parameterType="int">
+        UPDATE volunteerPost
+        SET view = view + 1
+        WHERE id = #{id}
+          AND is_deleted = FALSE
+    </update>
+
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.backoven.catdogshelter.domain.volunteer.query.mapper.VolunteerApplicationQueryMapper">
+
+    <!-- 컬럼 맵핑: 테이블/컬럼 이름은 DDL 기준 -->
+    <!-- volunteerAssociationApplicationDetails: id, status, time, volunteer_id, user_id -->
+    <!-- user: user_id, user_name (다른 컬럼명이라면 여길 맞춰주세요) -->
+
+    <select id="findById" parameterType="int"
+            resultType="com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerApplicationDTO">
+        SELECT
+            a.id,
+            a.status,
+            a.volunteer_id     AS volunteerId,
+            a.user_id          AS userId,
+            u.user_name        AS userName
+        FROM volunteerAssociationApplicationDetails a
+                 JOIN user u ON u.user_id = a.user_id
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findAllByVolunteerId"
+            resultType="com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerApplicationDTO">
+        SELECT
+        a.id,
+        a.status,
+        a.volunteer_id     AS volunteerId,
+        a.user_id          AS userId,
+        u.user_name        AS userName
+        FROM volunteerAssociationApplicationDetails a
+        JOIN user u ON u.user_id = a.user_id
+        WHERE a.volunteer_id = #{volunteerId}
+        ORDER BY a.id DESC
+        <if test="limit != null">
+            LIMIT
+            <if test="offset != null">#{offset},</if>
+            #{limit}
+        </if>
+    </select>
+
+</mapper>
