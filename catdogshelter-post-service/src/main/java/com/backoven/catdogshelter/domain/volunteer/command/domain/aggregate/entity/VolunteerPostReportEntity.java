@@ -1,9 +1,9 @@
 package com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity;
 
-import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
 import com.backoven.catdogshelter.common.entity.UserEntity;
 import com.backoven.catdogshelter.common.util.DateTimeUtil;
-import com.backoven.catdogshelter.common.enumulation.ReportCategory;
+import com.backoven.catdogshelter.common.util.ReportCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,9 +46,9 @@ public class VolunteerPostReportEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "head_id", foreignKey = @ForeignKey(name = "fk_vreport_head"))
-    private ShelterheadEntity head;
+    private ShelterHeadEntity head;
 
-    public static VolunteerPostReportEntity create(VolunteerPostEntity post, ReportCategory category, String etcDetail, UserEntity user, ShelterheadEntity head) {
+    public static VolunteerPostReportEntity create(VolunteerPostEntity post, ReportCategory category, String etcDetail, UserEntity user, ShelterHeadEntity head) {
         var e = new VolunteerPostReportEntity();
         e.setPost(post);
         e.setCategory(category);

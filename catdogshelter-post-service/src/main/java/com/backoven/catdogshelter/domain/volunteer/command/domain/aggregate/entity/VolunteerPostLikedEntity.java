@@ -1,6 +1,6 @@
 package com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity;
 
-import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
 import com.backoven.catdogshelter.common.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class VolunteerPostLikedEntity {
     // FK: nullable
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "head_id", foreignKey = @ForeignKey(name = "fk_vpl_head"))
-    private ShelterheadEntity head;
+    private ShelterHeadEntity head;
 
     // FK: nullable
     @ManyToOne(fetch = FetchType.LAZY)

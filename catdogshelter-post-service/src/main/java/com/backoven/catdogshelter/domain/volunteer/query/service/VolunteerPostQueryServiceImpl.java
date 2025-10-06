@@ -3,19 +3,17 @@ package com.backoven.catdogshelter.domain.volunteer.query.service;
 
 
 import com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerPostListItemDTO;
-
 import com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerPostSearchCond;
 import com.backoven.catdogshelter.domain.volunteer.query.mapper.VolunteerPostQueryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-
 import java.util.List;
-
 import java.util.Map;
 
-import static com.backoven.catdogshelter.common.util.pagination.PagingUtil.*;
+import static com.backoven.catdogshelter.common.util.pagination.PagingUtil.safePage;
+import static com.backoven.catdogshelter.common.util.pagination.PagingUtil.safeSize;
 
 @Service
 public class VolunteerPostQueryServiceImpl implements VolunteerPostQueryService {

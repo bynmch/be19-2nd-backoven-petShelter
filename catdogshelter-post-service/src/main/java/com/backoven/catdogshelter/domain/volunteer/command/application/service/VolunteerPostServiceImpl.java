@@ -1,11 +1,11 @@
 package com.backoven.catdogshelter.domain.volunteer.command.application.service;
 
-import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
 import com.backoven.catdogshelter.common.entity.UserEntity;
 import com.backoven.catdogshelter.common.repository.VolNoShelterHeadRepository;
 import com.backoven.catdogshelter.common.repository.VolNoUserRepository;
 import com.backoven.catdogshelter.common.util.DateTimeUtil;
-import com.backoven.catdogshelter.common.enumulation.ReportCategory;
+import com.backoven.catdogshelter.common.util.ReportCategory;
 import com.backoven.catdogshelter.domain.volunteer.command.application.dto.*;
 import com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity.*;
 import com.backoven.catdogshelter.domain.volunteer.command.domain.repository.*;
@@ -242,7 +242,7 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
         var post = volunteerPostRepository.findById(dto.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음: " + dto.getPostId()));
 
-        UserEntity user = null; ShelterheadEntity head = null;
+        UserEntity user = null; ShelterHeadEntity head = null;
         if (dto.getActorType() == VolunteerPostLikeToggleRequest.ActorType.USER) {
             user = volNoUserRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + dto.getUserId()));

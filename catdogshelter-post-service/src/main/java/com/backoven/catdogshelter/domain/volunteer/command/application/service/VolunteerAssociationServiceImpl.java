@@ -1,7 +1,7 @@
 // VolunteerAssociationServiceImpl.java
 package com.backoven.catdogshelter.domain.volunteer.command.application.service;
 
-import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
 import com.backoven.catdogshelter.common.entity.SigunguEntity;
 import com.backoven.catdogshelter.common.entity.UserEntity;
 import com.backoven.catdogshelter.common.util.DateTimeUtil;
@@ -15,9 +15,7 @@ import com.backoven.catdogshelter.domain.volunteer.command.domain.repository.Vol
 import com.backoven.catdogshelter.domain.volunteer.command.domain.repository.VolunteerAssociationRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +72,7 @@ public class VolunteerAssociationServiceImpl implements VolunteerAssociationServ
         assoc.setNumberOfPeople(dto.getNumberOfPeople());
         assoc.setIsEnd(false);
         assoc.setCreatedAt(DateTimeUtil.now());
-        assoc.setHead(em.getReference(ShelterheadEntity.class, dto.getHeadId()));
+        assoc.setHead(em.getReference(ShelterHeadEntity.class, dto.getHeadId()));
         assoc.setSigungu(em.getReference(SigunguEntity.class, dto.getSigunguId()));
         associationRepository.save(assoc);
         return assoc.getId();

@@ -4,11 +4,8 @@ package com.backoven.catdogshelter.domain.volunteer.command.application.controll
 import com.backoven.catdogshelter.domain.volunteer.command.application.dto.*;
 import com.backoven.catdogshelter.domain.volunteer.command.application.service.VolunteerPostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.v3.oas.annotations.Operation;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
