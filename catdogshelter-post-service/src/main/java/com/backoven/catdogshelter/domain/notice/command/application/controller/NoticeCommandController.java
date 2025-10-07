@@ -1,4 +1,3 @@
-// NoticeCommandController.java
 package com.backoven.catdogshelter.domain.notice.command.application.controller;
 
 import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeDTO;
@@ -32,7 +31,7 @@ public class NoticeCommandController {
         this.noticeLikeService = noticeLikeService;
     }
 
-    // JSON(dto) + 파일(files[])
+    // 게시글 작성
     @Operation(summary = "게시글 등록", description = "관리자는 파일과 함께 게시글을 등록할 수 있다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = {"/write"})
     public ResponseEntity<Long> create(
@@ -43,7 +42,7 @@ public class NoticeCommandController {
         return ResponseEntity.ok(id);
     }
 
-    // 수정: JSON(dto) + 새파일(newFiles[]) + 삭제할 파일 ID목록(deleteFileIds)
+    // 게시글 수정
     @Operation(summary = "게시글 수정", description = "관리자는 파일과 함께 게시글을 수정할 수 있다.")
     @PutMapping(value = "/{id}/modify", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> update(
@@ -58,11 +57,7 @@ public class NoticeCommandController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * 좋아요 토글 (userId 또는 headId 중 하나만 전송)
-     * 예) /api/notices/10/likes/toggle?userId=3
-     *    /api/notices/10/likes/toggle?headId=5
-     */
+    // 추천 토글
     @Operation(summary = "게시글 추천", description = "일반회원과 보호소장은 게시물에 토글로 추천과 취소를 할 수 있다.")
     @PostMapping("/{noticeId}/likes/toggle")
     public ResponseEntity<Void> toggleLike(
