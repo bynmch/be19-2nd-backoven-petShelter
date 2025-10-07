@@ -1,4 +1,3 @@
-// 봉사후기
 package com.backoven.catdogshelter.domain.volunteer.query.mapper;
 
 import com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerPostListItemDTO;

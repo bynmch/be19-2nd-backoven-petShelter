@@ -1,4 +1,3 @@
-// src/main/java/com/backoven/catdogshelter/domain/volunteer/query/dto/VolunteerApplicationDTO.java
 package com.backoven.catdogshelter.domain.volunteer.query.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;

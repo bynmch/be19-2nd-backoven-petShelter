@@ -1,4 +1,3 @@
-// VolunteerAssociationCommandController.java
 package com.backoven.catdogshelter.domain.volunteer.command.application.controller;
 
 import com.backoven.catdogshelter.domain.volunteer.command.application.dto.VolunteerAssociationApplyRequest;

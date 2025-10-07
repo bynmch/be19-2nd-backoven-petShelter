@@ -1,4 +1,3 @@
-// VolunteerAssociationApplicationDetailsEntity.java
 package com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity;
 
 import com.backoven.catdogshelter.common.entity.UserEntity;

@@ -1,4 +1,3 @@
-// VolunteerPost 서비스 구현
 package com.backoven.catdogshelter.domain.volunteer.query.service;
 
 

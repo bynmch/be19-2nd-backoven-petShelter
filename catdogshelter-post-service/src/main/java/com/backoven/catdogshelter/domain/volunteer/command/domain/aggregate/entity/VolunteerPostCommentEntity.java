@@ -1,6 +1,6 @@
 package com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity;
 
-import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
 import com.backoven.catdogshelter.common.entity.UserEntity;
 import com.backoven.catdogshelter.common.util.DateTimeUtil;
 import jakarta.persistence.*;
@@ -32,7 +32,7 @@ public class VolunteerPostCommentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "head_id", foreignKey = @ForeignKey(name = "fk_vcomment_head"))
-    private ShelterHeadEntity head;
+    private ShelterheadEntity head;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_vcomment_user"))
@@ -42,7 +42,7 @@ public class VolunteerPostCommentEntity {
     @JoinColumn(name = "post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_vcomment_post"))
     private VolunteerPostEntity post;
 
-    public static VolunteerPostCommentEntity create(VolunteerPostEntity post, String content, UserEntity user, ShelterHeadEntity head) {
+    public static VolunteerPostCommentEntity create(VolunteerPostEntity post, String content, UserEntity user, ShelterheadEntity head) {
         var e = new VolunteerPostCommentEntity();
         e.setPost(post);
         e.setContent(content);

@@ -1,4 +1,3 @@
-// src/main/java/com/backoven/catdogshelter/domain/volunteer/query/dto/VolunteerPostFileDTO.java
 package com.backoven.catdogshelter.domain.volunteer.query.dto;
 
 import lombok.*;

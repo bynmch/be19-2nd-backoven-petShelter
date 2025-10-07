@@ -1,7 +1,6 @@
-// VolunteerAssociationEntity.java
 package com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity;
 
-import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
 import com.backoven.catdogshelter.common.entity.SigunguEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -50,7 +49,7 @@ public class VolunteerAssociationEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "head_id", nullable = false, foreignKey = @ForeignKey(name = "fk_va_head"))
-    private ShelterHeadEntity head;
+    private ShelterheadEntity head;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sigungu_id", nullable = false, foreignKey = @ForeignKey(name = "fk_va_sigungu"))

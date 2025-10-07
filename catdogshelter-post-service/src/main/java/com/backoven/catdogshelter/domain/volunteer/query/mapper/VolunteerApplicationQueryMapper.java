@@ -1,4 +1,3 @@
-// src/main/java/com/backoven/catdogshelter/domain/volunteer/query/mapper/VolunteerApplicationQueryMapper.java
 package com.backoven.catdogshelter.domain.volunteer.query.mapper;
 
 import com.backoven.catdogshelter.domain.volunteer.query.dto.VolunteerApplicationDTO;

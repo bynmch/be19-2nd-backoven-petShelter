@@ -1,4 +1,3 @@
-// package: com.backoven.catdogshelter.domain.volunteer.command.application.controller
 package com.backoven.catdogshelter.domain.volunteer.command.application.controller;
 
 import com.backoven.catdogshelter.domain.volunteer.command.application.dto.*;
@@ -29,9 +28,9 @@ public class VolunteerPostCommandController {
         this.om = om;
     }
 
-    // 생성: multipart (dto + files[])
-    @Operation(summary = "게시글 등록", description = "봉사후기 게시글을 사진파일과 함께 작성할 수 있다.")
-
+    // 게시글 작성
+    @Operation(summary = "게시글 등록",
+            description = "게시글 이용자는 사진파일과 함께 게시글을 작성할 수 있다.")
     @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> writeVolunteerPost(
             @RequestPart("dto") String dtoJson,
@@ -42,10 +41,9 @@ public class VolunteerPostCommandController {
         return ResponseEntity.ok(Map.of("postId", id));
     }
 
-    // 수정: multipart (dto + newFiles[])
-
+    // 게시글 수정
     @Operation(summary = "게시글 수정",
-            description = "봉사후기 게시글을 사진파일과 함께 수정할 수 있다.")
+            description = "게시글 이용자는 자신이 작성한 게시글을 사진파일과 함께 수정할 수 있다.")
     @PatchMapping(value = "/{id}/modify", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> modifyVolunteerPost(
             @PathVariable Integer id,
@@ -57,8 +55,9 @@ public class VolunteerPostCommandController {
         return ResponseEntity.noContent().build();
     }
 
-    // 소프트 삭제
-    @Operation(summary = "게시글 삭제", description = "게시글을 삭제할 수 있다.")
+    // 게시글 삭제
+    @Operation(summary = "게시글 삭제",
+            description = "게시글 이용자는 자신이 작성한 게시글을 삭제할 수 있다.")
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteVolunteerPost(@PathVariable Integer id) {
         volunteerPostService.deleteVolunteerPost(id);
@@ -67,9 +66,7 @@ public class VolunteerPostCommandController {
 
     // 좋아요 토글
     @Operation(summary = "게시글 추천",
-            description = "추천을 누르면 내역에 저장되고 " +
-            "\n다시 한 번 누르면 내역이 삭제되어 좋아요 수를 " +
-                    "\n늘리거나 줄여서 좋아요 수를 카운트한다.")
+            description = "게시글 이용자는 게시글을 추천하거나 취소 할 수 있다.")
     @PostMapping("/{id}/like")
     public ResponseEntity<Map<String, Object>> toggleLike(
             @PathVariable Integer id,
@@ -79,29 +76,17 @@ public class VolunteerPostCommandController {
         return ResponseEntity.ok(Map.of("liked", liked));
     }
 
-    // 게시글 신고
-//    @PostMapping("/{id}/report")
-//    public ResponseEntity<Void> reportPost(
-//            @PathVariable Integer id,
-//            @RequestBody VolunteerPostReportRequest req
-//    ) {
-//        req.setPostId(id);
-//        volunteerPostService.reportPost(req);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//    }
 
-    // 봉사후기 게시글 신고 기능 추가
+    // 게시글 신고
     @Operation(summary = "게시글 신고",
-            description = "게시판 이용자는 " +
-            "\n스팸/욕설/음란물/사기/잘못된정보/기타로 게시글을 신고할 수 있다. " +
-            "\n게시판 이용자는 기타카테고리 선택할 시에는 상세한 내용을 필시 작성한다.")
+            description = "게시판 이용자는 게시글을 신고할 수 있다. ")
     @PostMapping("/{postId}/report")
     public ResponseEntity<?> reportVolunteerPost(
             @PathVariable Integer postId,
             @RequestBody VolunteerPostReportCreateRequest req
     ) {
         try {
-            req.setPostId(postId); // path로 고정
+            req.setPostId(postId);
             Integer id = volunteerPostService.reportVolunteerPost(req);
             return ResponseEntity.ok(Map.of("reportId", id));
         } catch (IllegalArgumentException e) {
@@ -111,7 +96,7 @@ public class VolunteerPostCommandController {
 
     // 댓글 작성
     @Operation(summary = "댓글 등록",
-            description = "일반회원과 보호소장은 봉사후기 게시글을 작성할 수 있다.")
+            description = "게시글 이용자는 댓글을 작성할 수 있다.")
     @PostMapping("/{id}/comment")
     public ResponseEntity<Map<String, Object>> addVolunteerPostComment(
             @PathVariable Integer id,
@@ -124,7 +109,7 @@ public class VolunteerPostCommandController {
 
     // 댓글 수정
     @Operation(summary = "댓글 수정",
-            description = "일반회원과 보호소장은 자신이 작성한 봉사후기 게시글을 수정할 수 있다.")
+            description = "게시글 이용자는 자신이 작성한 댓글을 수정할 수 있다.")
     @PatchMapping("/comments/{commentId}")
     public ResponseEntity<Void> modifyVolunteerPostComment(
             @PathVariable Integer commentId,
@@ -134,9 +119,9 @@ public class VolunteerPostCommandController {
         return ResponseEntity.noContent().build();
     }
 
-    // 댓글 삭제(soft)
+    // 댓글 삭제
     @Operation(summary = "댓글 삭제",
-            description = "일반회원과 보호소장은 자신이 작성한 봉사후기 게시글을 삭제할 수 있다.")
+            description = "게시글 이용자는 자신이 작성한 댓글을 삭제할 수 있다.")
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<Void> deleteVolunteerPostComment(@PathVariable Integer commentId) {
         volunteerPostService.deleteVolunteerPostComment(commentId);
@@ -144,21 +129,8 @@ public class VolunteerPostCommandController {
     }
 
     // 댓글 신고
-//    @PostMapping("/comments/{commentId}/report")
-//    public ResponseEntity<Void> reportComment(
-//            @PathVariable Integer commentId,
-//            @RequestBody VolunteerPostCommentReportRequest req
-//    ) {
-//        req.setCommentId(commentId);
-//        volunteerPostService.reportComment(req);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//    }
-
-    // 댓글 신고 기능 추가
     @Operation(summary = "댓글 신고",
-            description = "게시판 이용자는 " +
-            "\n스팸/욕설/음란물/사기/잘못된정보/기타로 댓글을 신고할 수 있다. " +
-            "\n게시판 이용자는 기타카테고리 선택할 시에는 상세한 내용을 필히 작성한다.")
+            description = "게시판 이용자는 댓글을 신고할 수 있다.")
     @PostMapping("/comments/{commentId}/report")
     public ResponseEntity<?> reportVolunteerPostComment(
             @PathVariable Integer commentId,

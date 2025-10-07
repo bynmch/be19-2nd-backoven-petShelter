@@ -1,4 +1,3 @@
-// package: com.backoven.catdogshelter.domain.volunteer.command.application.service
 package com.backoven.catdogshelter.domain.volunteer.command.application.service;
 
 import com.backoven.catdogshelter.domain.volunteer.command.application.dto.*;
@@ -24,8 +23,4 @@ public interface VolunteerPostService {
     // 신고
     Integer reportVolunteerPost(VolunteerPostReportCreateRequest req);
     Integer reportVolunteerPostComment(VolunteerPostCommentReportCreateRequest req);
-
-    // 게시글, 댓글 신고(중복 신고 방지)
-//    void reportPost(VolunteerPostReportRequest req);
-//    void reportComment(VolunteerPostCommentReportRequest req);
 }

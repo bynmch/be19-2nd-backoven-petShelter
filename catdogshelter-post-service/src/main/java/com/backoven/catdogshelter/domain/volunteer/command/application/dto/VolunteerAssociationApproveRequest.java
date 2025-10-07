@@ -1,4 +1,3 @@
-// VolunteerAssociationApproveRequest.java
 package com.backoven.catdogshelter.domain.volunteer.command.application.dto;
 
 import lombok.Data;

@@ -1,4 +1,3 @@
-// VolunteerAssociationService.java
 package com.backoven.catdogshelter.domain.volunteer.command.application.service;
 
 import com.backoven.catdogshelter.domain.volunteer.command.application.dto.VolunteerAssociationApplyRequest;

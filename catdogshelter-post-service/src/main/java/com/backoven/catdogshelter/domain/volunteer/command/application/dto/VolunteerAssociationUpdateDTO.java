@@ -1,4 +1,3 @@
-// VolunteerAssociationUpdateDTO.java (수정용)
 package com.backoven.catdogshelter.domain.volunteer.command.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,4 +1,3 @@
-// VolunteerAssociationDTO.java (작성용)
 package com.backoven.catdogshelter.domain.volunteer.command.application.dto;
 
 import lombok.Data;

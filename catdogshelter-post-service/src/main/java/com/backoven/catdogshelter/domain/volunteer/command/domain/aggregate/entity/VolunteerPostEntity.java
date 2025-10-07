@@ -1,4 +1,3 @@
-// package: com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity
 package com.backoven.catdogshelter.domain.volunteer.command.domain.aggregate.entity;
 
 import com.backoven.catdogshelter.common.util.DateTimeUtil;

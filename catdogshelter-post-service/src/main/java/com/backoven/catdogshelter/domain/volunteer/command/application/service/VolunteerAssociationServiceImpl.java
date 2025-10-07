@@ -1,7 +1,6 @@
-// VolunteerAssociationServiceImpl.java
 package com.backoven.catdogshelter.domain.volunteer.command.application.service;
 
-import com.backoven.catdogshelter.common.entity.ShelterHeadEntity;
+import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
 import com.backoven.catdogshelter.common.entity.SigunguEntity;
 import com.backoven.catdogshelter.common.entity.UserEntity;
 import com.backoven.catdogshelter.common.util.DateTimeUtil;
@@ -72,7 +71,7 @@ public class VolunteerAssociationServiceImpl implements VolunteerAssociationServ
         assoc.setNumberOfPeople(dto.getNumberOfPeople());
         assoc.setIsEnd(false);
         assoc.setCreatedAt(DateTimeUtil.now());
-        assoc.setHead(em.getReference(ShelterHeadEntity.class, dto.getHeadId()));
+        assoc.setHead(em.getReference(ShelterheadEntity.class, dto.getHeadId()));
         assoc.setSigungu(em.getReference(SigunguEntity.class, dto.getSigunguId()));
         associationRepository.save(assoc);
         return assoc.getId();

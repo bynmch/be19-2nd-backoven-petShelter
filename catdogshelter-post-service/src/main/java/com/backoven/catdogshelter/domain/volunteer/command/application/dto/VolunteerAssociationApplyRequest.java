@@ -1,4 +1,3 @@
-// VolunteerAssociationApplyRequest.java (신청/취소용)
 package com.backoven.catdogshelter.domain.volunteer.command.application.dto;
 
 import lombok.Data;

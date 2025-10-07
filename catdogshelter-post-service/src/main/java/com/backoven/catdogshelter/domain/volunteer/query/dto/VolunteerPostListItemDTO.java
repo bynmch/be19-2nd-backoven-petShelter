@@ -1,4 +1,3 @@
-// 공통 목록 DTO (필드 차이를 최소화)
 package com.backoven.catdogshelter.domain.volunteer.query.dto;
 
 import lombok.*;

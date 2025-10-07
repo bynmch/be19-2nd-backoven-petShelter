@@ -1,4 +1,3 @@
-// 검색/페이징 조건 DTO
 package com.backoven.catdogshelter.domain.volunteer.query.dto;
 
 import lombok.*;

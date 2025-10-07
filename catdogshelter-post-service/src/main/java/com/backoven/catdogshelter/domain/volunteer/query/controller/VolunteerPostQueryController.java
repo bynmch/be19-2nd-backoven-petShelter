@@ -1,4 +1,3 @@
-// VolunteerPost 컨트롤러
 package com.backoven.catdogshelter.domain.volunteer.query.controller;
 
 import com.backoven.catdogshelter.domain.volunteer.query.service.VolunteerPostQueryService;
