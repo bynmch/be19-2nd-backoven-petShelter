@@ -1,6 +1,7 @@
 package com.backoven.catdogshelter.domain.notice.command.application.service;
 
 import com.backoven.catdogshelter.common.entity.ShelterheadEntity;
+import com.backoven.catdogshelter.common.entity.UserEntity;
 import com.backoven.catdogshelter.common.repository.VolNoShelterHeadRepository;
 import com.backoven.catdogshelter.common.repository.VolNoUserRepository;
 import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeCreateDTO;
@@ -121,9 +122,7 @@ public class NoticeServiceImpl implements NoticeService {
 
         // 파일 삭제
         List<NoticeFileEntity> files = noticeFileRepository.findByNoticeId(id);
-        for (NoticeFileEntity file : files) {
-            noticeFileRepository.delete(file);
-        }
+        noticeFileRepository.deleteAll(files);
     }
 
     // 게시글 추천
@@ -132,16 +131,16 @@ public class NoticeServiceImpl implements NoticeService {
         NoticeEntity notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음: " + noticeId));
         if (request.getActorType() == NoticeLikeToggleRequest.ActorType.USER) {
-            var user = volNoUserRepository.findById(request.getUserId())
+            UserEntity user = volNoUserRepository.findById(request.getUserId())
                     .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + request.getUserId()));
             if (noticeLikedRepository.existsByNotice_IdAndUser_UserId(noticeId, user.getUserId())) {
                 noticeLikedRepository.deleteByNotice_IdAndUser_UserId(noticeId, user.getUserId());
                 return false;
             } else {
-                var e = new NoticeLikedEntity();
-                e.setNotice(notice);
-                e.setUser(user);
-                noticeLikedRepository.save(e);
+                NoticeLikedEntity like = new NoticeLikedEntity();
+                like.setNotice(notice);
+                like.setUser(user);
+                noticeLikedRepository.save(like);
                 return true;
             }
         } else {
@@ -151,10 +150,10 @@ public class NoticeServiceImpl implements NoticeService {
                 noticeLikedRepository.deleteByNotice_IdAndHead_Id(noticeId, head.getId());
                 return false;
             } else {
-                var e = new NoticeLikedEntity();
-                e.setNotice(notice);
-                e.setHead(head);
-                noticeLikedRepository.save(e);
+                NoticeLikedEntity like = new NoticeLikedEntity();
+                like.setNotice(notice);
+                like.setHead(head);
+                noticeLikedRepository.save(like);
                 return true;
             }
         }

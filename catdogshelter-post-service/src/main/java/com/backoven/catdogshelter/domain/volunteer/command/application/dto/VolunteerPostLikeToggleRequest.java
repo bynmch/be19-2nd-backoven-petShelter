@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VolunteerPostLikeToggleRequest {
     public enum ActorType { USER, HEAD }
-    private ActorType actorType;
+    private VolunteerPostLikeToggleRequest.ActorType actorType;
     private Integer userId; // USER면 필수
     private Integer headId; // HEAD면 필수
 }

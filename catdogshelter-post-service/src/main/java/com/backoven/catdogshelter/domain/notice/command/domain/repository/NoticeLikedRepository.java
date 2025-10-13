@@ -6,10 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticeLikedRepository extends JpaRepository<NoticeLikedEntity, Integer> {
+    boolean existsByNotice_IdAndUser_UserId(Integer postId, Integer userId);
+    boolean existsByNotice_IdAndHead_Id(Integer postId, Integer headId);
 
-    boolean existsByNotice_IdAndUser_UserId(Integer noticeId, Integer userId);
-    boolean existsByNotice_IdAndHead_Id(Integer noticeId, Integer headId);
-
-    int deleteByNotice_IdAndUser_UserId(Integer noticeId, Integer userId);
-    int deleteByNotice_IdAndHead_Id(Integer noticeId, Integer headId);
+    Integer deleteByNotice_IdAndUser_UserId(Integer postId, Integer userId);
+    Integer deleteByNotice_IdAndHead_Id(Integer postId, Integer headId);
 }

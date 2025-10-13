@@ -9,6 +9,6 @@ import lombok.Setter;
 public class NoticeLikeToggleRequest {
     public enum ActorType { USER, HEAD }
     private NoticeLikeToggleRequest.ActorType actorType;
-    private Integer userId; // USER면 필수
-    private Integer headId; // HEAD면 필수
+    private Integer userId;
+    private Integer headId;
 }
