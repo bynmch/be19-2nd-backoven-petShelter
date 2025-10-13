@@ -10,4 +10,6 @@ public interface NoticeFileRepository extends JpaRepository<NoticeFileEntity, In
 
     // 삭제할 파일들을 번호로 찾음
     List<NoticeFileEntity> findByIdIn(List<Integer> deleteFileIds);
+
+    List<NoticeFileEntity> findByNoticeId(Integer id);
 }

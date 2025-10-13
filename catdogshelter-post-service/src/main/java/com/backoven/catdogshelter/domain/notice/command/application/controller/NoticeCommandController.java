@@ -27,7 +27,8 @@ public class NoticeCommandController {
     private final ObjectMapper om;
 
     @Autowired
-    public NoticeCommandController(NoticeService noticeService, ObjectMapper om) {
+    public NoticeCommandController(NoticeService noticeService,
+                                   ObjectMapper om) {
         this.noticeService = noticeService;
         this.om = om;
     }
@@ -56,15 +57,15 @@ public class NoticeCommandController {
         noticeService.modifyNotice(id, dto, newFiles == null ? List.of() : newFiles);
         return ResponseEntity.noContent().build();
     }
-//
-//    // 게시글 삭제
-//    @Operation(summary = "게시글 삭제", description = "관리자는 파일과 함께 게시글을 삭제할 수 있다.")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteNotice(@PathVariable Long id) {
-//        noticeService.deleteNotice(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
+
+    // 게시글 삭제
+    @Operation(summary = "게시글 삭제", description = "관리자는 파일과 함께 게시글을 삭제할 수 있다.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteNotice(@PathVariable Integer id) {
+        noticeService.deleteNotice(id);
+        return ResponseEntity.noContent().build();
+    }
+
 //    @Operation(summary = "게시글 추천",
 //            description = "게시글 이용자는 게시글을 추천하거나 취소 할 수 있다.")
 //    @PostMapping("/{id}/like")

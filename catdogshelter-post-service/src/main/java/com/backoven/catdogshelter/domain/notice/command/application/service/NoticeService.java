@@ -16,7 +16,7 @@ public interface NoticeService {
     void modifyNotice(Integer id, NoticeUpdateDTO dto, List<MultipartFile> newFiles);
 
     // 게시글 삭제
-    void deleteNotice(Long id);
+    void deleteNotice(Integer id);
 
     // 게시글 추천
     boolean toggleLike(Integer noticeId, NoticeLikeToggleRequest request);

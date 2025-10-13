@@ -31,6 +31,9 @@ public class NoticeEntity {
     @Column(name = "updated_at", length = 20)
     private String updatedAt;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
+
     @Column(name = "rating_id", nullable = false)
     private Integer ratingId = -1;
 

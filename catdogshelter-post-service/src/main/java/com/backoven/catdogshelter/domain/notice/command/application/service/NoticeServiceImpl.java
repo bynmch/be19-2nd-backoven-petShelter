@@ -112,8 +112,18 @@ public class NoticeServiceImpl implements NoticeService {
 
     // 게시글 삭제
     @Override
-    public void deleteNotice(Long id) {
-        noticeRepository.deleteById(Math.toIntExact(id));
+    public void deleteNotice(Integer id) {
+        NoticeEntity notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+
+        // 게시글만 Soft삭제처리
+        notice.setIsDeleted(true);
+
+        // 파일 삭제
+        List<NoticeFileEntity> files = noticeFileRepository.findByNoticeId(id);
+        for (NoticeFileEntity file : files) {
+            noticeFileRepository.delete(file);
+        }
     }
 
     // 게시글 추천
