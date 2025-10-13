@@ -121,6 +121,7 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
         if (updated == 0) throw new IllegalArgumentException("이미 삭제되었거나 존재하지 않습니다: " + postId);
     }
 
+    // 게시글 추천
     @Override
     public boolean toggleLike(Integer postId, VolunteerPostLikeToggleRequest req) {
         var post = volunteerPostRepository.findById(postId)

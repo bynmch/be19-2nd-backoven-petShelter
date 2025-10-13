@@ -1,10 +1,10 @@
 package com.backoven.catdogshelter.domain.notice.command.application.controller;
 
-import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeDTO;
+import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeCreateDTO;
 import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeUpdateDTO;
-import com.backoven.catdogshelter.domain.notice.command.application.service.NoticeLikeService;
 import com.backoven.catdogshelter.domain.notice.command.application.service.NoticeService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "공지사항 API")
 @RestController
@@ -23,49 +24,55 @@ import java.util.List;
 public class NoticeCommandController {
 
     private final NoticeService noticeService;
-    private final NoticeLikeService noticeLikeService;
+    private final ObjectMapper om;
 
     @Autowired
-    public NoticeCommandController(NoticeService noticeService, NoticeLikeService noticeLikeService) {
+    public NoticeCommandController(NoticeService noticeService, ObjectMapper om) {
         this.noticeService = noticeService;
-        this.noticeLikeService = noticeLikeService;
+        this.om = om;
     }
 
-    // 게시글 작성
+    // 게시글 등록
     @Operation(summary = "게시글 등록", description = "관리자는 파일과 함께 게시글을 등록할 수 있다.")
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = {"/write"})
-    public ResponseEntity<Long> create(
-            @RequestPart("dto") NoticeDTO dto,
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> writeNotice(
+            @RequestPart("dto") String dtoJson,
             @RequestPart(value = "files", required = false) List<MultipartFile> files
-    ) {
-        long id = noticeService.writeNotice(dto, files);
-        return ResponseEntity.ok(id);
+    ) throws Exception{
+        NoticeCreateDTO dto = om.readValue(dtoJson, NoticeCreateDTO.class);
+        Integer id = noticeService.writeNotice(dto, files == null ? List.of() : files);
+        return ResponseEntity.ok(Map.of("noticeId", id));
     }
 
     // 게시글 수정
     @Operation(summary = "게시글 수정", description = "관리자는 파일과 함께 게시글을 수정할 수 있다.")
-    @PutMapping(value = "/{id}/modify", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> update(
-            @PathVariable Long id,
-            @RequestPart("dto") NoticeUpdateDTO dto,                       // title, content 만 포함
-            @RequestPart(value = "newFiles", required = false) List<MultipartFile> newFiles,
-            // 방법1) 같은 키를 여러 줄로 넣기 → deleteFileIds=1, deleteFileIds=3 ...
-            // 방법2) JSON 배열로 넣기 → [1,3] (컨텐트 타입을 application/json으로)
-            @RequestPart(value = "deleteFileIds", required = false) List<Integer> deleteFileIds
-    ) {
-        noticeService.modifyNotice(id, dto, newFiles, deleteFileIds);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> modifyNotice(
+            @PathVariable Integer id,
+            @RequestPart("dto")  String dtoJson,
+            @RequestPart(value = "files", required = false) List<MultipartFile> newFiles
+    ) throws Exception {
+        NoticeUpdateDTO dto = om.readValue(dtoJson, NoticeUpdateDTO.class);
+        noticeService.modifyNotice(id, dto, newFiles == null ? List.of() : newFiles);
         return ResponseEntity.noContent().build();
     }
-
-    // 추천 토글
-    @Operation(summary = "게시글 추천", description = "일반회원과 보호소장은 게시물에 토글로 추천과 취소를 할 수 있다.")
-    @PostMapping("/{noticeId}/likes/toggle")
-    public ResponseEntity<Void> toggleLike(
-            @PathVariable Integer noticeId,
-            @RequestParam(required = false) Integer userId,
-            @RequestParam(required = false) Integer headId
-    ) {
-        noticeService.toggleLike(noticeId, userId, headId);
-        return ResponseEntity.ok().build();
-    }
+//
+//    // 게시글 삭제
+//    @Operation(summary = "게시글 삭제", description = "관리자는 파일과 함께 게시글을 삭제할 수 있다.")
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteNotice(@PathVariable Long id) {
+//        noticeService.deleteNotice(id);
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    @Operation(summary = "게시글 추천",
+//            description = "게시글 이용자는 게시글을 추천하거나 취소 할 수 있다.")
+//    @PostMapping("/{id}/like")
+//    public ResponseEntity<Map<String, Object>> toggleLike(
+//            @PathVariable Integer id,
+//            @RequestBody NoticeLikeToggleRequest request
+//    ) {
+//        boolean liked = noticeService.toggleLike(id, request);
+//        return ResponseEntity.ok(Map.of("liked", liked));
+//    }
 }

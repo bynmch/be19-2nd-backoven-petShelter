@@ -1,17 +1,23 @@
-// NoticeService.java
 package com.backoven.catdogshelter.domain.notice.command.application.service;
 
-import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeDTO;
+import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeCreateDTO;
+import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeLikeToggleRequest;
 import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeUpdateDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface NoticeService {
-    long writeNotice(NoticeDTO dto, List<MultipartFile> files);
-    void modifyNotice(Long id, NoticeUpdateDTO dto, List<MultipartFile> newFiles, List<Integer> deleteFileIds);
-    /**
-     * 좋아요 토글 (userId 또는 headId 중 하나만 전달)
-     */
-    void toggleLike(Integer noticeId, Integer userId, Integer headId);
+
+    // 게시글 등록
+    Integer writeNotice(NoticeCreateDTO dto, List<MultipartFile> files);
+
+    // 게시글 수정
+    void modifyNotice(Integer id, NoticeUpdateDTO dto, List<MultipartFile> newFiles);
+
+    // 게시글 삭제
+    void deleteNotice(Long id);
+
+    // 게시글 추천
+    boolean toggleLike(Integer noticeId, NoticeLikeToggleRequest request);
 }

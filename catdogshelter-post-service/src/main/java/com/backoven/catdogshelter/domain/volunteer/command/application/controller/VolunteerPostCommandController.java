@@ -28,10 +28,10 @@ public class VolunteerPostCommandController {
         this.om = om;
     }
 
-    // 게시글 작성
+    // 게시글 등록
     @Operation(summary = "게시글 등록",
             description = "게시글 이용자는 사진파일과 함께 게시글을 작성할 수 있다.")
-    @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> writeVolunteerPost(
             @RequestPart("dto") String dtoJson,
             @RequestPart(value = "files", required = false) List<MultipartFile> files
@@ -64,7 +64,7 @@ public class VolunteerPostCommandController {
         return ResponseEntity.noContent().build();
     }
 
-    // 좋아요 토글
+    // 게시글 추천
     @Operation(summary = "게시글 추천",
             description = "게시글 이용자는 게시글을 추천하거나 취소 할 수 있다.")
     @PostMapping("/{id}/like")

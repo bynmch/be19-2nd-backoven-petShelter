@@ -4,6 +4,7 @@ import com.backoven.catdogshelter.common.util.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Getter @Setter
 @Entity
 @Table(name = "notice")
+@ToString
 public class NoticeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,44 +25,31 @@ public class NoticeEntity {
     @Column(nullable = false)
     private String content;
 
-    // 서버 시간 자동
     @Column(name = "created_at", length = 20, nullable = false)
     private String createdAt;
 
     @Column(name = "updated_at", length = 20)
-    private String updatedAt; // nullable
+    private String updatedAt;
 
     @Column(name = "rating_id", nullable = false)
-    private Integer ratingId;
+    private Integer ratingId = -1;
 
     @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     private List<NoticeFileEntity> files = new ArrayList<>();
 
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NoticeLikedEntity> likes = new ArrayList<>();
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = DateTimeUtil.now();
+    public static NoticeEntity newNotice(String title, String content) {
+        NoticeEntity notice = new NoticeEntity();
+        notice.setTitle(title);
+        notice.setContent(content);
+        notice.setCreatedAt(DateTimeUtil.now());
+        return notice;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
+    public void modify(String title, String content) {
+        if (title != null) this.title = title;
+        if (content != null) this.content = content;
         this.updatedAt = DateTimeUtil.now();
     }
 
-    /** 파일만 수정해도 수정시간 반영하고 싶을 때 호출 */
-    public void touch() {
-        this.updatedAt = DateTimeUtil.now();
-    }
-
-    // 편의 메서드
-    public void addFile(NoticeFileEntity f) {
-        f.setNotice(this);
-        this.files.add(f);
-    }
-    public void removeFile(NoticeFileEntity f) {
-        f.setNotice(null);
-        this.files.remove(f);
-    }
 }

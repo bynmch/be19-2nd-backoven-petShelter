@@ -1,7 +1,7 @@
-package com.backoven.catdogshelter.domain.volunteer.command.infrastructure.util;
+package com.backoven.catdogshelter.domain.notice.command.infrastructure.util;
 
 import com.backoven.catdogshelter.common.util.DateTimeUtil;
-import com.backoven.catdogshelter.domain.volunteer.command.application.dto.VolunteerPostFileDTO;
+import com.backoven.catdogshelter.domain.notice.command.application.dto.NoticeFileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,22 +14,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component("volunteerPostFileStorage")
+@Component("noticeFileStorage")
 @RequiredArgsConstructor
 public class FileStorage {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
     @Value("${filepath}")
-    private String fileBase; // 정적 접근용 prefix (예: /uploads 또는 http://.../uploads)
+    private String fileBase;
 
-    public List<VolunteerPostFileDTO> storeAll(List<MultipartFile> files) {
+    public List<NoticeFileDTO> storeAll(List<MultipartFile> files) {
         if (files == null || files.isEmpty()) return List.of();
         try {
             Files.createDirectories(Path.of(uploadDir));
         } catch (Exception ignored) {}
 
-        List<VolunteerPostFileDTO> result = new ArrayList<>();
+        List<NoticeFileDTO> result = new ArrayList<>();
         for (MultipartFile mf : files) {
             if (mf.isEmpty()) continue;
             String orig = Optional.ofNullable(mf.getOriginalFilename()).orElse("file");
@@ -42,7 +42,7 @@ public class FileStorage {
                 Path dest = Path.of(uploadDir, rename);
                 mf.transferTo(dest.toFile());
 
-                VolunteerPostFileDTO dto = new VolunteerPostFileDTO();
+                NoticeFileDTO dto = new NoticeFileDTO();
                 dto.setFileRename(rename);
                 dto.setFilePath(fileBase.endsWith("/") ? fileBase + rename : fileBase + "/" + rename);
                 dto.setUploadedAt(DateTimeUtil.now());

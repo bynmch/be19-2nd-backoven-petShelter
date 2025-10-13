@@ -1,11 +1,12 @@
 package com.backoven.catdogshelter.domain.notice.command.application.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
-public class ResponseNoticeDTO {
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class NoticeCreateDTO {
     private String title;
     private String content;
-    private String createdAt;
-    private String updatedAt;
 }

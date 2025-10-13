@@ -4,10 +4,12 @@ import com.backoven.catdogshelter.common.util.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter @Setter
 @Entity
 @Table(name = "noticefiles")
+@ToString
 public class NoticeFileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +17,7 @@ public class NoticeFileEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id", nullable = false, foreignKey = @ForeignKey(name = "fk_nf_notice"))
+    @ToString.Exclude  // 무한루프 방지
     private NoticeEntity notice;
 
     @Column(name = "file_rename", length = 100, nullable = false)

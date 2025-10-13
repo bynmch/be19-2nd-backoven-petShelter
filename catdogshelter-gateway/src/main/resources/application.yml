@@ -37,4 +37,4 @@ spring:
             - RewritePath=/user-service/shelter-head/(?<segment>.*), /shelter-head/$\{segment}
 token:
   expiration_time: 43200000
-  secret: "VKKCjFzrzJQE8oM69GmgavfauYLnHnQeG4k1ab/lrYtrEQMk7o0/3j8KmqM33prEOWs5IdSVhQsbKiV3UzFhHQ=="
+  secret: MMUXypOTaZo3cf0zRSUEuv9K89MlQDvp3ZdYp6KQvpPfVz7hYeDSZFky9rTaPj4URLOiiEr5svjZlb1RVYzE9w==
