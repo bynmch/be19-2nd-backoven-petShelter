@@ -1,4 +1,3 @@
-// src/main/java/com/backoven/catdogshelter/domain/notice/query/controller/NoticeQueryController.java
 package com.backoven.catdogshelter.domain.notice.query.controller;
 
 import com.backoven.catdogshelter.domain.notice.query.dto.NoticeDetailDTO;
@@ -24,34 +23,35 @@ public class NoticeQueryController {
     private final VolunteerAssociationQueryService volunteerAssociationQueryService;
 
     @Autowired
-    public NoticeQueryController(NoticeQueryService noticeQueryService, VolunteerAssociationQueryService volunteerAssociationQueryService) {
+    public NoticeQueryController(NoticeQueryService noticeQueryService,
+                                 VolunteerAssociationQueryService volunteerAssociationQueryService) {
         this.noticeQueryService = noticeQueryService;
         this.volunteerAssociationQueryService = volunteerAssociationQueryService;
     }
 
-    // 공지 상세 + 파일 목록 GET /notice-posts/1
+    // {id}번 게시글 상세조회
     @Operation(summary = "게시글 상세 조회", description = "게시글과 파일을 조회할 수 있다.")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getDetail(@PathVariable Integer id) {
-        NoticeDetailDTO dto = noticeQueryService.getNoticeDetail(id);
+    public ResponseEntity<?> selectNoticeDetail(@PathVariable Integer id) {
+        NoticeDetailDTO dto = noticeQueryService.selectNoticeDetail(id);
         if (dto == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(dto);
     }
 
-    // 공지 목록 (검색/페이징) 예: GET /notice-posts?keyword=공지&createdFrom=2025-09-01&createdTo=2025-09-30&page=1&size=10&orderBy=likeCount&orderDir=DESC
-    @Operation(summary = "게시글 목록 조회", description = "게시글의 목록을 조건에 따라 조회할 수 있다.")
-    @GetMapping(value = {"", "/search"})
-    public Map<String, Object> list(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "createdFrom", required = false) String createdFrom,
-            @RequestParam(value = "createdTo", required = false) String createdTo,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "size", required = false) Integer size,
-            @RequestParam(value = "orderBy", required = false) String orderBy,
-            @RequestParam(value = "orderDir", required = false) String orderDir
-    ) {
-        return noticeQueryService.search(keyword, createdFrom, createdTo, page, size, orderBy, orderDir);
-    }
+//    // 게시글 목록 조회
+//    @Operation(summary = "게시글 목록 조회", description = "게시글의 목록을 조건에 따라 조회할 수 있다.")
+//    @GetMapping(value = {"", "/search"})
+//    public Map<String, Object> list(
+//            @RequestParam(value = "keyword", required = false) String keyword,
+//            @RequestParam(value = "createdFrom", required = false) String createdFrom,
+//            @RequestParam(value = "createdTo", required = false) String createdTo,
+//            @RequestParam(value = "page", required = false) Integer page,
+//            @RequestParam(value = "size", required = false) Integer size,
+//            @RequestParam(value = "orderBy", required = false) String orderBy,
+//            @RequestParam(value = "orderDir", required = false) String orderDir
+//    ) {
+//        return noticeQueryService.search(keyword, createdFrom, createdTo, page, size, orderBy, orderDir);
+//    }
 }

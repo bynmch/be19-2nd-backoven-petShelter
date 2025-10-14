@@ -8,47 +8,48 @@
     <!-- 공지 단건: 좋아요 수 포함 (LEFT JOIN + GROUP BY) -->
     <select id="findNoticeById" resultType="com.backoven.catdogshelter.domain.notice.query.dto.NoticeDetailDTO">
         SELECT
-        n.id,
-        n.title,
-        n.content,
-        n.created_at AS createdAt,
-        n.updated_at AS updatedAt,
-        n.rating_id  AS ratingId,
-        COALESCE(COUNT(nl.id), 0) AS likeCount
-        FROM notice n
-        LEFT JOIN noticeLiked nl ON nl.notice_id = n.id
-        WHERE n.id = #{id}
-        GROUP BY n.id, n.title, n.content, n.created_at, n.updated_at, n.rating_id
+               n.id
+             , n.title
+             , n.content, n.created_at AS createdAt
+             , n.updated_at AS updatedAt
+             , n.rating_id  AS ratingId
+             , COALESCE(COUNT(nl.id), 0) AS likeCount
+          FROM notice n
+          LEFT JOIN noticeLiked nl ON nl.notice_id = n.id
+         WHERE n.id = #{id}
+         GROUP BY n.id, n.title, n.content, n.created_at, n.updated_at, n.rating_id
     </select>
 
     <!-- 파일 목록 -->
     <select id="findFilesByNoticeId" resultType="com.backoven.catdogshelter.domain.notice.query.dto.NoticeFileDTO">
         SELECT
-        nf.id,
-        nf.file_rename AS fileRename,
-        nf.file_path   AS filePath,
-        nf.uploaded_at AS uploadedAt
-        FROM noticeFiles nf
-        WHERE nf.notice_id = #{noticeId}
-        ORDER BY nf.id ASC
+               nf.id
+             , nf.file_rename AS fileRename
+             , nf.file_path   AS filePath
+             , nf.uploaded_at AS uploadedAt
+          FROM noticeFiles nf
+         WHERE nf.notice_id = #{noticeId}
+         ORDER BY nf.id ASC
     </select>
 
 
     <!-- 공통 SELECT 절 -->
     <sql id="notice_list_select">
         SELECT
-        n.id,
-        n.title,
-        -- 목록에서는 내용 앞부분만 미리보기(원하면 LENGTH 조절)
-        CASE
-        WHEN LENGTH(n.content) > 200 THEN CONCAT(SUBSTRING(n.content,1,200),'...')
-        ELSE n.content
-        END AS content,
-        n.created_at AS createdAt,
-        n.updated_at AS updatedAt,
-        COALESCE(COUNT(nl.id), 0) AS likeCount
-        FROM notice n
-        LEFT JOIN noticeLiked nl ON nl.notice_id = n.id
+               n.id
+             , n.title,
+
+    <!-- 목록에서는 내용 앞부분만 미리보기(원하면 LENGTH 조절) -->
+          CASE
+          WHEN LENGTH(n.content) > 200 THEN CONCAT(SUBSTRING(n.content,1,200),'...')
+          ELSE n.content
+           END AS content
+             , n.created_at AS createdAt
+             , n.updated_at AS updatedAt
+             , COALESCE(COUNT(nl.id), 0) AS likeCount
+          FROM notice n
+          LEFT JOIN noticeLiked nl ON nl.notice_id = n.id
+         WHERE n.is_deleted = false
     </sql>
 
     <!-- 공통 WHERE -->

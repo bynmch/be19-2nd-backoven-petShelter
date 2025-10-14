@@ -1,4 +1,3 @@
-// src/main/java/com/backoven/catdogshelter/domain/notice/query/dto/NoticeListItemDTO.java
 package com.backoven.catdogshelter.domain.notice.query.dto;
 
 import lombok.*;

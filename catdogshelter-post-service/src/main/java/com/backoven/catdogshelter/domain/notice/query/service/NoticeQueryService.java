@@ -8,7 +8,7 @@ import java.util.Map;
 public interface NoticeQueryService {
 
     // 상세 조회
-    NoticeDetailDTO getNoticeDetail(Integer id);
+    NoticeDetailDTO selectNoticeDetail(Integer id);
 
     // 목록 조회
     Map<String, Object> search(
