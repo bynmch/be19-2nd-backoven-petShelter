@@ -58,7 +58,7 @@ public class VolunteerPostCommandController {
     // 게시글 삭제
     @Operation(summary = "게시글 삭제",
             description = "게시글 이용자는 자신이 작성한 게시글을 삭제할 수 있다.")
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVolunteerPost(@PathVariable Integer id) {
         volunteerPostService.deleteVolunteerPost(id);
         return ResponseEntity.noContent().build();

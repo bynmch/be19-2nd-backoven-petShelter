@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
 @Entity
-@Table(name = "volunteerPostFiles")
+@Table(name = "volunteerpostfiles")
 public class VolunteerPostFileEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

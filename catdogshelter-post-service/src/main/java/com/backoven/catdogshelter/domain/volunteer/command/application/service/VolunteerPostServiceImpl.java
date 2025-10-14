@@ -87,34 +87,38 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
     // 게시글 수정
     @Override
     public void modifyVolunteerPost(Integer postId, VolunteerPostUpdateDTO dto, List<MultipartFile> newFiles) {
-        var post = volunteerPostRepository.findById(postId)
+        VolunteerPostEntity post = volunteerPostRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음: " + postId));
         if (post.getDeleted()) throw new IllegalStateException("삭제된 게시글입니다.");
 
         post.modify(dto.getTitle(), dto.getContent());
 
+        for (VolunteerPostFileEntity file : post.getFiles()) {
+            dto.getDeleteFileIds().add(file.getId());
+        }
+
         // 파일 삭제
         if (dto.getDeleteFileIds() != null && !dto.getDeleteFileIds().isEmpty()) {
-            var targets = volunteerPostFileRepository.findByIdIn(dto.getDeleteFileIds());
+            List<VolunteerPostFileEntity> targets = volunteerPostFileRepository.findByIdIn(dto.getDeleteFileIds());
 
             // 소유 검증
-            for (var f : targets) {
-                if (!Objects.equals(f.getPost().getId(), post.getId()))
-                    throw new IllegalArgumentException("다른 게시글 파일은 삭제할 수 없습니다. fileId=" + f.getId());
+            for (VolunteerPostFileEntity file : targets) {
+                if (!Objects.equals(file.getPost().getId(), post.getId()))
+                    throw new IllegalArgumentException("다른 게시글 파일은 삭제할 수 없습니다. fileId=" + file.getId());
+                post.getFiles().remove(file);
             }
-            log.info("파일 확인: {}", targets);
             volunteerPostFileRepository.deleteAll(targets);
         }
 
         // 새 파일 추가
-        var stored = fileStorage.storeAll(newFiles);
-        for (var s : stored) {
-            var f = new VolunteerPostFileEntity();
-            f.setPost(post);
-            f.setFileRename(s.getFileRename());
-            f.setFilePath(s.getFilePath());
-            f.setUploadedAt(s.getUploadedAt());
-            volunteerPostFileRepository.save(f);
+        List<VolunteerPostFileDTO> stored = fileStorage.storeAll(newFiles);
+        for (VolunteerPostFileDTO fileDTO : stored) {
+            VolunteerPostFileEntity fileEntity = new VolunteerPostFileEntity();
+            fileEntity.setPost(post);
+            fileEntity.setFileRename(fileDTO.getFileRename());
+            fileEntity.setFilePath(fileDTO.getFilePath());
+            fileEntity.setUploadedAt(fileDTO.getUploadedAt());
+            volunteerPostFileRepository.save(fileEntity);
         }
     }
 
