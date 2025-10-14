@@ -7,8 +7,8 @@ public interface VolunteerPostLikedRepository extends JpaRepository<VolunteerPos
     boolean existsByPost_IdAndUser_UserId(Integer postId, Integer userId);
     boolean existsByPost_IdAndHead_Id(Integer postId, Integer headId);
 
-    long deleteByPost_IdAndUser_UserId(Integer postId, Integer userId);
-    long deleteByPost_IdAndHead_Id(Integer postId, Integer headId);
+    Integer deleteByPost_IdAndUser_UserId(Integer postId, Integer userId);
+    Integer deleteByPost_IdAndHead_Id(Integer postId, Integer headId);
 
     int countByPost_Id(Integer postId);
 }

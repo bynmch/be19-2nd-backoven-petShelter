@@ -222,7 +222,7 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
             if (e.getMessage() != null && e.getMessage().contains("uq_volunteer_comment_report_user")) {
                 throw new IllegalStateException("이미 신고한 댓글입니다. (user)");
             }
-            throw e; // 다른 제약 위반은 그대로 터뜨림
+            throw e;
         };
 
         return entity.getId();
@@ -308,7 +308,7 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
             if (e.getMessage() != null && e.getMessage().contains("uq_volunteer_comment_report_user")) {
                 throw new IllegalStateException("이미 신고한 댓글입니다. (user)");
             }
-            throw e; // 다른 제약 위반은 그대로 터뜨림
+            throw e;
         }
         return entity.getId();
     }
