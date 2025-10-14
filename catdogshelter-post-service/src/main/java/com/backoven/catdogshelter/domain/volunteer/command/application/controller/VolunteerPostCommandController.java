@@ -44,13 +44,13 @@ public class VolunteerPostCommandController {
     // 게시글 수정
     @Operation(summary = "게시글 수정",
             description = "게시글 이용자는 자신이 작성한 게시글을 사진파일과 함께 수정할 수 있다.")
-    @PatchMapping(value = "/{id}/modify", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> modifyVolunteerPost(
             @PathVariable Integer id,
             @RequestPart("dto") String dtoJson,
             @RequestPart(value = "files", required = false) List<MultipartFile> newFiles
     ) throws Exception {
-        var dto = om.readValue(dtoJson, VolunteerPostUpdateDTO.class);
+        VolunteerPostUpdateDTO dto = om.readValue(dtoJson, VolunteerPostUpdateDTO.class);
         volunteerPostService.modifyVolunteerPost(id, dto, newFiles == null ? List.of() : newFiles);
         return ResponseEntity.noContent().build();
     }

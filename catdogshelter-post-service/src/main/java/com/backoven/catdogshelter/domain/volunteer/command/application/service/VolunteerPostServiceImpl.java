@@ -60,28 +60,31 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
         this.fileStorage = fileStorage;
     }
 
-    // 봉사후기 작성 + 파일 등록
+    // 게시글 등록
     @Override
     public Integer writeVolunteerPost(VolunteerPostCreateDTO dto, List<MultipartFile> files) {
-        var detail = applicationDetailsRepository.findById(dto.getVolappdetailId())
+        VolunteerAssociationApplicationDetailsEntity detail =
+                applicationDetailsRepository.findById(dto.getVolappdetailId())
                 .orElseThrow(() -> new IllegalArgumentException("신청내역이 없습니다: " + dto.getVolappdetailId()));
 
-        var post = VolunteerPostEntity.newPost(dto.getTitle(), dto.getContent(), detail);
+        VolunteerPostEntity post =
+                VolunteerPostEntity.newPost(dto.getTitle(), dto.getContent(), detail);
+
         // 파일 저장
-        var stored = fileStorage.storeAll(files);
-        for (var s : stored) {
-            var f = new VolunteerPostFileEntity();
-            f.setPost(post);
-            f.setFileRename(s.getFileRename());
-            f.setFilePath(s.getFilePath());
-            f.setUploadedAt(s.getUploadedAt());
-            post.getFiles().add(f);
+        List<VolunteerPostFileDTO> stored = fileStorage.storeAll(files);
+        for (VolunteerPostFileDTO vPFDto : stored) {
+            VolunteerPostFileEntity vPFE = new VolunteerPostFileEntity();
+            vPFE.setPost(post);
+            vPFE.setFileRename(vPFDto.getFileRename());
+            vPFE.setFilePath(vPFDto.getFilePath());
+            vPFE.setUploadedAt(vPFDto.getUploadedAt());
+            post.getFiles().add(vPFE);
         }
         volunteerPostRepository.save(post);
         return post.getId();
     }
 
-    // 봉사후기 수정 + 파일 수정
+    // 게시글 수정
     @Override
     public void modifyVolunteerPost(Integer postId, VolunteerPostUpdateDTO dto, List<MultipartFile> newFiles) {
         var post = volunteerPostRepository.findById(postId)
@@ -93,6 +96,7 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
         // 파일 삭제
         if (dto.getDeleteFileIds() != null && !dto.getDeleteFileIds().isEmpty()) {
             var targets = volunteerPostFileRepository.findByIdIn(dto.getDeleteFileIds());
+
             // 소유 검증
             for (var f : targets) {
                 if (!Objects.equals(f.getPost().getId(), post.getId()))
