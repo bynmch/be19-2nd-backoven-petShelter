@@ -40,18 +40,18 @@ public class NoticeQueryController {
         return ResponseEntity.ok(dto);
     }
 
-//    // 게시글 목록 조회
-//    @Operation(summary = "게시글 목록 조회", description = "게시글의 목록을 조건에 따라 조회할 수 있다.")
-//    @GetMapping(value = {"", "/search"})
-//    public Map<String, Object> list(
-//            @RequestParam(value = "keyword", required = false) String keyword,
-//            @RequestParam(value = "createdFrom", required = false) String createdFrom,
-//            @RequestParam(value = "createdTo", required = false) String createdTo,
-//            @RequestParam(value = "page", required = false) Integer page,
-//            @RequestParam(value = "size", required = false) Integer size,
-//            @RequestParam(value = "orderBy", required = false) String orderBy,
-//            @RequestParam(value = "orderDir", required = false) String orderDir
-//    ) {
-//        return noticeQueryService.search(keyword, createdFrom, createdTo, page, size, orderBy, orderDir);
-//    }
+    // 게시글 목록 조회
+    @Operation(summary = "게시글 목록 조회", description = "게시글의 목록을 조건에 따라 조회할 수 있다.")
+    @GetMapping(value = {"", "/search"})
+    public Map<String, Object> selectNoticeListBySearchAndOrderBy(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "createdFrom", required = false) String createdFrom,
+            @RequestParam(value = "createdTo", required = false) String createdTo,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size,
+            @RequestParam(value = "orderBy", required = false) String orderBy,
+            @RequestParam(value = "orderDir", required = false) String orderDir
+    ) {
+        return noticeQueryService.selectNoticeListBySearchAndOrderBy(keyword, createdFrom, createdTo, page, size, orderBy, orderDir);
+    }
 }

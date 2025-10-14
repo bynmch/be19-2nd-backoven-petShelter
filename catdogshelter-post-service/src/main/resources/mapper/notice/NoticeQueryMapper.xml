@@ -50,26 +50,21 @@
              , COALESCE(COUNT(nl.id), 0) AS likeCount
           FROM notice n
           LEFT JOIN noticeLiked nl ON nl.notice_id = n.id
-         WHERE n.is_deleted = false
     </sql>
 
-    <!-- 공통 WHERE -->
+    <!-- 공통 WHERE 절 -->
     <sql id="notice_list_where">
-        <where>
-            <!-- keyword: 제목/내용 -->
-            <if test="cond.keyword != null and cond.keyword != ''">
-                (n.title LIKE CONCAT('%', #{cond.keyword}, '%')
-                OR n.content LIKE CONCAT('%', #{cond.keyword}, '%'))
-            </if>
-
-            <!-- created_at 범위: VARCHAR 이므로 날짜 형식일 경우만 STR_TO_DATE 사용 -->
-            <if test="cond.createdFrom != null and cond.createdFrom != ''">
-                AND STR_TO_DATE(n.created_at, '%Y-%m-%d') &gt;= STR_TO_DATE(#{cond.createdFrom}, '%Y-%m-%d')
-            </if>
-            <if test="cond.createdTo != null and cond.createdTo != ''">
-                AND STR_TO_DATE(n.created_at, '%Y-%m-%d') &lt;= STR_TO_DATE(#{cond.createdTo}, '%Y-%m-%d')
-            </if>
-        </where>
+        WHERE n.is_deleted = false
+        <if test="cond.keyword != null and cond.keyword != ''">
+            AND (n.title LIKE CONCAT('%', #{cond.keyword}, '%')
+            OR n.content LIKE CONCAT('%', #{cond.keyword}, '%'))
+        </if>
+        <if test="cond.createdFrom != null and cond.createdFrom != ''">
+            AND STR_TO_DATE(n.created_at, '%Y-%m-%d') &gt;= STR_TO_DATE(#{cond.createdFrom}, '%Y-%m-%d')
+        </if>
+        <if test="cond.createdTo != null and cond.createdTo != ''">
+            AND STR_TO_DATE(n.created_at, '%Y-%m-%d') &lt;= STR_TO_DATE(#{cond.createdTo}, '%Y-%m-%d')
+        </if>
     </sql>
 
     <!-- 목록 조회 -->
@@ -79,7 +74,6 @@
         <include refid="notice_list_where"/>
         GROUP BY n.id, n.title, content, n.created_at, n.updated_at
 
-        <!-- 정렬 화이트리스트 -->
         <choose>
             <when test="cond.orderBy == 'likeCount'">
                 ORDER BY likeCount
@@ -101,7 +95,8 @@
 
     <!-- 총 건수 -->
     <select id="countNotices" parameterType="map" resultType="long">
-        SELECT COUNT(1) FROM (
+        SELECT COUNT(1)
+          FROM (
         <include refid="notice_list_select"/>
         <include refid="notice_list_where"/>
         GROUP BY n.id, n.title, content, n.created_at, n.updated_at

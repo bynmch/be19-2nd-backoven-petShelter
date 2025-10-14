@@ -18,6 +18,7 @@ public class NoticeQueryServiceImpl implements NoticeQueryService {
 
     private final NoticeQueryMapper mapper;
 
+    // 게시글 상세 조회
     @Override
     public NoticeDetailDTO selectNoticeDetail(Integer id) {
         NoticeDetailDTO notice = mapper.findNoticeById(id);
@@ -28,8 +29,9 @@ public class NoticeQueryServiceImpl implements NoticeQueryService {
         return notice;
     }
 
+    // 게시글 목록 조회 (검색 및 정렬 조회)
     @Override
-    public Map<String, Object> search(
+    public Map<String, Object> selectNoticeListBySearchAndOrderBy(
             String keyword,
             String createdFrom,
             String createdTo,

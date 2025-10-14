@@ -1,4 +1,3 @@
-// src/main/java/com/backoven/catdogshelter/domain/notice/query/service/NoticeQueryService.java
 package com.backoven.catdogshelter.domain.notice.query.service;
 
 import com.backoven.catdogshelter.domain.notice.query.dto.NoticeDetailDTO;
@@ -7,11 +6,11 @@ import java.util.Map;
 
 public interface NoticeQueryService {
 
-    // 상세 조회
+    // 게시글 상세 조회
     NoticeDetailDTO selectNoticeDetail(Integer id);
 
-    // 목록 조회
-    Map<String, Object> search(
+    // 게시글 목록 조회(검색, 정렬, 페이지 조회)
+    Map<String, Object> selectNoticeListBySearchAndOrderBy(
             String keyword,
             String createdFrom,
             String createdTo,
