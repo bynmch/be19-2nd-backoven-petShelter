@@ -16,7 +16,8 @@ public class VolunteerAssociationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Integer volunteerId;
 
     @Column(length = 50, nullable = false)
     private String title;

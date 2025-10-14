@@ -74,7 +74,7 @@ public class VolunteerAssociationServiceImpl implements VolunteerAssociationServ
         assoc.setHead(em.getReference(ShelterheadEntity.class, dto.getHeadId()));
         assoc.setSigungu(em.getReference(SigunguEntity.class, dto.getSigunguId()));
         associationRepository.save(assoc);
-        return assoc.getId();
+        return assoc.getVolunteerId();
     }
 
     @Override
@@ -115,6 +115,7 @@ public class VolunteerAssociationServiceImpl implements VolunteerAssociationServ
         assoc.setDeadline(true); // 신청 마감만 시킴 (물리 삭제 X)
     }
 
+    // 봉사 신청
     @Override
     public Integer apply(VolunteerAssociationApplyRequest req) {
         var assoc = associationRepository.findById(req.getVolunteerId())
@@ -151,6 +152,7 @@ public class VolunteerAssociationServiceImpl implements VolunteerAssociationServ
         return app.getId();
     }
 
+    // 신청 취소
     @Override
     public void cancel(VolunteerAssociationApplyRequest req) {
         int deleted = applicationRepository.deleteByVolunteerAndUser(req.getVolunteerId(), req.getUserId());
@@ -159,7 +161,7 @@ public class VolunteerAssociationServiceImpl implements VolunteerAssociationServ
         }
     }
 
-//    /* 승인 */
+    /* 신청 승인 */
     @Override
     public void approve(VolunteerAssociationApproveRequest req) {
         var app = applicationRepository.findById(req.getApplicationId())

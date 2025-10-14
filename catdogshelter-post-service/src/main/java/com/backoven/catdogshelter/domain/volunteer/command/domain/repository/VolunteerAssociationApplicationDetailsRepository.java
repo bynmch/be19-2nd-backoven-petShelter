@@ -14,23 +14,19 @@ public interface VolunteerAssociationApplicationDetailsRepository
     @Query("""
            select (count(a) > 0)
            from VolunteerAssociationApplicationDetailsEntity a
-           where id(a.volunteer) = :volunteerId and id(a.user) = :userId
+           where volunteer(a.volunteer) = :volunteerId and id(a.user) = :userId
            """)
     boolean existsByVolunteerAndUser(@Param("volunteerId") Integer volunteerId,
                                      @Param("userId") Integer userId);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("""
-           delete from VolunteerAssociationApplicationDetailsEntity a
-           where id(a.volunteer) = :volunteerId and id(a.user) = :userId
-           """)
-    int deleteByVolunteerAndUser(@Param("volunteerId") Integer volunteerId,
-                                 @Param("userId") Integer userId);
+    @Modifying
+    @Query("delete from VolunteerAssociationApplicationDetailsEntity v where v.volunteer.volunteerId = :volunteerId and v.user.userId = :userId")
+    int deleteByVolunteerAndUser(@Param("volunteerId") Integer volunteerId, @Param("userId") Integer userId);
 
     @Query("""
            select count(a)
            from VolunteerAssociationApplicationDetailsEntity a
-           where id(a.volunteer) = :volunteerId
+           where volunteer(a.volunteer) = :volunteerId
            """)
     long countByVolunteer(@Param("volunteerId") Integer volunteerId);
 }
