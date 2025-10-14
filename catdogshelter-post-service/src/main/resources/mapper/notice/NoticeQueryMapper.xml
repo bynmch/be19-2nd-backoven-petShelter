@@ -17,6 +17,7 @@
           FROM notice n
           LEFT JOIN noticeLiked nl ON nl.notice_id = n.id
          WHERE n.id = #{id}
+           AND n.is_deleted = false
          GROUP BY n.id, n.title, n.content, n.created_at, n.updated_at, n.rating_id
     </select>
 
