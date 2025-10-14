@@ -61,11 +61,6 @@ public class VolunteerPostEntity {
         return e;
     }
 
-    public void softDelete() {
-        this.deleted = true;
-        this.updatedAt = DateTimeUtil.now();
-    }
-
     public void modify(String title, String content) {
         if (title != null) this.title = title;
         if (content != null) this.content = content;

@@ -122,11 +122,18 @@ public class VolunteerPostServiceImpl implements VolunteerPostService {
         }
     }
 
-    // 봉사후기 삭제
+    // 게시글 삭제
     @Override
     public void deleteVolunteerPost(Integer postId) {
-        var updated = volunteerPostRepository.softDelete(postId, DateTimeUtil.now());
-        if (updated == 0) throw new IllegalArgumentException("이미 삭제되었거나 존재하지 않습니다: " + postId);
+        VolunteerPostEntity post = volunteerPostRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+
+        // 게시글만 Soft 삭제처리
+        post.setDeleted(true);
+
+        // 파일 삭제
+        List<VolunteerPostFileEntity> files = volunteerPostFileRepository.findByPostId(postId);
+        volunteerPostFileRepository.deleteAll(files);
     }
 
     // 게시글 추천
